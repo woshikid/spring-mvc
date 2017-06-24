@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd
+						http://code.alibabatech.com/schema/dubbo		http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+	<context:property-placeholder location="classpath:/spring/spring-config.properties" ignore-unresolvable="true" />
+	
+	<dubbo:application name="mvc" />
+	<dubbo:protocol name="dubbo" port="20880" />
+	<dubbo:protocol name="hessian" port="8080" server="servlet" contextpath="mvc/dubbo" />
+	<dubbo:provider timeout="60000" retries="0" />
+	<dubbo:registry address="${dubbo.registry.address}" />
+	<dubbo:consumer timeout="60000" retries="0" check="false" />
+	<dubbo:service ref="dubboService" interface="com.github.woshikid.mvc.service.IDubboService" />
+	<dubbo:reference id="dubboClient" interface="com.github.woshikid.mvc.service.IDubboService" url="dubbo://127.0.0.1:20880" />
+	<dubbo:reference id="dubboHessianClient" interface="com.github.woshikid.mvc.service.IHessianService" url="hessian://127.0.0.1:8080/mvc/hessian/service" />
+
+</beans>

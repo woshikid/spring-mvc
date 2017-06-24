@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:/spring/spring-config.properties" ignore-unresolvable="true" />
+	
+	<bean name="/hessian/service" class="org.springframework.remoting.caucho.HessianServiceExporter">
+		<property name="service">
+			<bean class="com.github.woshikid.mvc.service.HessianService" />
+		</property>
+		<property name="serviceInterface" value="com.github.woshikid.mvc.service.IHessianService" />
+	</bean>
+	
+	<bean id="hessianClient" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl" value="http://127.0.0.1:8080/mvc/hessian/service" />
+		<property name="serviceInterface" value="com.github.woshikid.mvc.service.IHessianService" />
+	</bean>
+	
+	<bean id="hessianDubboClient" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+		<property name="serviceUrl" value="http://127.0.0.1:8080/mvc/dubbo/com.github.woshikid.mvc.service.IDubboService" />
+		<property name="serviceInterface" value="com.github.woshikid.mvc.service.IDubboService" />
+	</bean>
+	
+</beans>

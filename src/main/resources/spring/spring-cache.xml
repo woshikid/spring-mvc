@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd
+						http://www.springframework.org/schema/cache		http://www.springframework.org/schema/cache/spring-cache.xsd">
+
+	<context:property-placeholder location="classpath:/spring/spring-config.properties" ignore-unresolvable="true" />
+	
+<!-- 	<bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager"> -->
+<!-- 		<constructor-arg ref="redisTemplate" /> -->
+<!-- 		<property name="defaultExpiration" value="${cache.expiration}" /> -->
+<!-- 	</bean> -->
+
+	<bean id="cacheManager" class="com.github.woshikid.mvc.utils.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehCacheManager" />
+	</bean>
+	
+	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="shared" value="true" />
+	</bean>
+	
+	<bean id="cacheKeyGenerator" class="com.github.woshikid.mvc.utils.CacheKeyGenerator" />
+	
+	<cache:annotation-driven key-generator="cacheKeyGenerator" cache-manager="cacheManager" />
+	
+	<bean id="testCache" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="ehCacheManager" />
+		<property name="cacheName" value="testCache" />
+	</bean>
+	
+</beans>

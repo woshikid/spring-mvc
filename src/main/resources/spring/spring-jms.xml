@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:/spring/spring-config.properties" ignore-unresolvable="true" />
+	
+	<bean id="noPrefetchPolicy" class="org.apache.activemq.ActiveMQPrefetchPolicy">
+		<property name="all" value="0" />
+	</bean>
+	
+	<bean id="jmsConnectionFactory" class="org.apache.activemq.pool.PooledConnectionFactory" destroy-method="stop">
+		<property name="connectionFactory">
+			<bean class="org.apache.activemq.ActiveMQConnectionFactory">
+				<property name="brokerURL" value="${activemq.url}" />
+				<property name="prefetchPolicy" ref="noPrefetchPolicy" />
+			</bean>
+		</property>
+	</bean>
+	
+<!-- 	<bean id="xaJmsConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory"> -->
+<!-- 		<property name="targetConnectionFactory"> -->
+<!-- 			<bean class="com.atomikos.jms.AtomikosConnectionFactoryBean" init-method="init" destroy-method="close"> -->
+<!-- 				<property name="uniqueResourceName" value="activemq" /> -->
+<!-- 				<property name="xaConnectionFactory"> -->
+<!-- 					<bean class="org.apache.activemq.ActiveMQXAConnectionFactory"> -->
+<!-- 						<property name="brokerURL" value="${activemq.url}" /> -->
+<!-- 						<property name="prefetchPolicy" ref="noPrefetchPolicy" /> -->
+<!-- 					</bean> -->
+<!-- 				</property> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+		<property name="sessionTransacted" value="true" />
+		<property name="defaultDestinationName" value="test" />
+		<property name="pubSubDomain" value="false" />
+		<property name="explicitQosEnabled" value="true" />
+		<property name="timeToLive" value="60000" />
+		<property name="receiveTimeout" value="60000" />
+	</bean>
+	
+<!-- 	<bean class="org.springframework.jms.listener.DefaultMessageListenerContainer"> -->
+<!-- 		<property name="connectionFactory" ref="jmsConnectionFactory" /> -->
+<!-- <! 		<property name="transactionManager" ref="jtaTransactionManager" /> -->
+<!-- 		<property name="sessionTransacted" value="true" /> -->
+<!-- 		<property name="destination" ref="testQueue" /> -->
+<!-- 		<property name="receiveTimeout" value="0" /> -->
+<!-- 		<property name="messageListener"> -->
+<!-- 			<bean class="org.springframework.jms.listener.adapter.MessageListenerAdapter"> -->
+<!-- 				<property name="delegate"> -->
+<!-- 					<bean class="com.github.woshikid.mvc.listener.MQMessageListener" /> -->
+<!-- 				</property> -->
+<!-- 				<property name="defaultListenerMethod" value="onMessage" /> -->
+<!-- 				<property name="defaultResponseTopicName" value="test" /> -->
+<!-- 			</bean> -->
+<!-- 		</property> -->
+<!-- 		<property name="clientId" value="jmsClient" /> -->
+<!-- 		<property name="durableSubscriptionName" value="jmsClientOnTestTopic" /> -->
+<!-- 	</bean> -->
+	
+	<bean id="jmsTransactionManager" class="org.springframework.jms.connection.JmsTransactionManager">
+		<property name="connectionFactory" ref="jmsConnectionFactory" />
+	</bean>
+	
+	<bean id="testQueue" class="org.apache.activemq.command.ActiveMQQueue">
+		<constructor-arg value="test" />
+	</bean>
+	
+	<bean id="testTopic" class="org.apache.activemq.command.ActiveMQTopic">
+		<constructor-arg value="test" />
+	</bean>
+	
+</beans>

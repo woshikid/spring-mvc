@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans		http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/context	http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<context:property-placeholder location="classpath:/spring/spring-config.properties" ignore-unresolvable="true" />
+	
+<!-- 	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> -->
+<!-- 		<property name="targetObject"> -->
+<!-- 			<bean class="com.github.woshikid.mvc.task.LogSchedual" /> -->
+<!-- 		</property> -->
+<!-- 		<property name="targetMethod" value="log" /> -->
+<!-- 		<property name="concurrent" value="false" /> -->
+<!-- 	</bean> -->
+
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+		<property name="jobClass" value="com.github.woshikid.mvc.task.LogSchedual" />
+		<property name="durability" value="true" />
+	</bean>
+	
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+		<property name="jobDetail" ref="jobDetail" />
+		<property name="cronExpression" value="0 */10 * * * ?" />
+	</bean>
+	
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+<!-- 		<property name="configLocation" value="classpath:quartz.properties" /> -->
+<!-- 		<property name="dataSource" ref="dataSource" /> -->
+		<property name="taskExecutor" ref="taskExecutor" />
+		<property name="overwriteExistingJobs" value="true" />
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

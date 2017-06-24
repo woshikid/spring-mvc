@@ -1,0 +1,24 @@
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	maxBytesLocalHeap="100M" maxBytesLocalDisk="1G">
+	
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache
+			eternal="false"
+			timeToIdleSeconds="${cache.expiration}"
+			timeToLiveSeconds="${cache.expiration}"
+			maxElementsOnDisk="10000000"
+			diskExpiryThreadIntervalSeconds="120"
+			memoryStoreEvictionPolicy="LRU">
+		<persistence strategy="localTempSwap" />
+	</defaultCache>
+	
+	<cache name="cachingFilter"
+		maxBytesLocalHeap="10M"
+		timeToIdleSeconds="${cache.page.idle}"
+		timeToLiveSeconds="${cache.page.expiration}" />
+	
+	<cache name="testCache" timeToLiveSeconds="${cache.expiration}" />
+	
+</ehcache>
