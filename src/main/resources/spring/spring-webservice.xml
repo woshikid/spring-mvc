@@ -24,5 +24,7 @@
 	</simple:server>
 	
 	<simple:client id="webserviceClient" serviceClass="com.github.woshikid.mvc.service.IWebService" address="http://127.0.0.1:8080/mvc/webservice/service" />
+
+	<jaxws:client id="webserviceClient2" serviceClass="com.github.woshikid.mvc.service.IWebService" address="http://127.0.0.1:8080/mvc/jax-ws/service" />
 	
 </beans>
