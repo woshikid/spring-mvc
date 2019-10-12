@@ -13,7 +13,6 @@ freemarker
 shiro  
 fileupload  
 quartz  
-activemq  
 zookeeper  
 jedis  
 dubbo  
