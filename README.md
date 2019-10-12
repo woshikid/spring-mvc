@@ -18,4 +18,3 @@ jedis
 dubbo  
 hessian  
 webservice  
-jta  

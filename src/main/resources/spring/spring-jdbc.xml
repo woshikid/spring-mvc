@@ -42,18 +42,6 @@
 		</property>
 	</bean>
 	
-<!-- 	<bean id="xaDataSource" class="com.atomikos.jdbc.AtomikosDataSourceBean" init-method="init" destroy-method="close"> -->
-<!-- 		<property name="uniqueResourceName" value="mysql" /> -->
-<!-- 		<property name="xaDataSourceClassName" value="com.alibaba.druid.pool.xa.DruidXADataSource" /> -->
-<!-- 		<property name="xaProperties"> -->
-<!-- 			<props> -->
-<!-- 				<prop key="url">${jdbc.url}</prop> -->
-<!-- 				<prop key="username">${jdbc.username}</prop> -->
-<!-- 				<prop key="password">${jdbc.password}</prop> -->
-<!-- 			</props> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
-	
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
