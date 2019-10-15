@@ -12,6 +12,11 @@
   </properties>
   <dependencies>
     <dependency>
+      <groupId>com.github.woshikid</groupId>
+      <artifactId>java-utils</artifactId>
+      <version>1.1.3</version>
+    </dependency>
+    <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
